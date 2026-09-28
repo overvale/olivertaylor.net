@@ -45,16 +45,16 @@
     --color-border-subtle: oklch(88% 0 0);
     --color-border-control: oklch(62% 0 0);
 
-    /* Color roles: accents come from the palette in nasa-colors.css. */
+    /* Role-based palette: neutral structure, blue identity, red emphasis, green code. */
     --color-text: var(--color-base);
     --color-nav-text: var(--color-primary-darkest);
     --color-muted-text: var(--color-gray);
     --color-code-text: var(--color-green-racing);
     --color-callout-marker: var(--color-secondary-dark);
-    --color-link-underline: var(--color-secondary);
-    --color-link-underline-hover: var(--color-secondary-darkest);
-    --color-focus-ring: var(--color-primary);
-    --color-selection-background: var(--color-cool-blue-lightest);
+    --color-link-underline: var(--color-secondary-dark);
+    --color-link-underline-hover: oklch(48% 0.16 29.819);
+    --color-focus-ring: var(--color-primary-darker);
+    --color-selection-background: oklch(90% 0.009 260.686);
     --color-selection-text: var(--color-base);
 
     /* Body typography and spacing. */
@@ -78,7 +78,7 @@
     --h2-font-size: 1.3rem;
     --h2-margin: 6rem 0 3rem 0;
     --h2-padding: 0.55rem;
-    --h2-border: 2px solid var(--color-gray-dark);
+    --h2-border: 2px solid var(--color-base);
     --h3-font-size: 1.05rem;
     --h3-font-stretch: 105%;
     --h3-margin: 6rem 0 1.1rem 0;
@@ -95,13 +95,15 @@
 
     /* Links and endnote markers. */
     --link-underline-thickness: 0.06em;
+    --link-hover-underline-thickness: 0.11em;
     --link-underline-offset: 2px;
-    --link-hover-background: var(--color-gold-lightest);
+    --link-hover-background: transparent;
     --endnote-font-size: 0.75em;
     --endnote-min-width: 1em;
     --endnote-offset: -2px;
     --endnote-margin: 0 0.1em;
     --endnote-radius: 3px;
+    --endnote-background: oklch(95% 0.008 260.686);
 
     /* Rules and code blocks. */
     --rule-height: 1px;
@@ -121,7 +123,7 @@
     --permalink-font-size: 0.85rem;
     --permalink-marker-gap: 0.5rem;
     --metadata-font-size: 0.9rem;
-    --metadata-color: var(--color-cool-blue);
+    --metadata-color: var(--color-primary-darker);
     --download-font-size: 0.9em;
     --download-padding: 0.15em 0.5em;
     --download-radius: 6px;
@@ -360,6 +362,7 @@ a {
 a:hover {
     background-color: var(--link-hover-background);
     text-decoration-color: var(--color-link-underline-hover);
+    text-decoration-thickness: var(--link-hover-underline-thickness);
 }
 
 a:focus-visible {
@@ -376,16 +379,16 @@ a.en {
     min-width: var(--endnote-min-width);
     top: var(--endnote-offset);
     margin: var(--endnote-margin);
-    border: 1px solid var(--color-gray-cool-light);
-    background-color: var(--color-primary-alt-lightest);
+    border: 1px solid var(--color-border-subtle);
+    background-color: var(--endnote-background);
     border-radius: var(--endnote-radius);
-    color: var(--color-primary);
+    color: var(--color-primary-darker);
     font-weight: 700;
     text-align: center;
 }
 
 a.en:hover {
-    border-color: var(--color-gold);
+    border-color: var(--color-secondary-dark);
 }
 
 dt {
@@ -491,7 +494,7 @@ article > .byline {
 }
 
 article > .pdf-download a {
-    color: var(--color-primary-darkest);
+    color: var(--color-primary-darker);
     text-decoration: none;
     font-size: var(--download-font-size);
     padding: var(--download-padding);
