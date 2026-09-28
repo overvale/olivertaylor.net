@@ -13,8 +13,8 @@
     --layout-content-width: 65ch;
     --layout-page-bottom-space: 10em;
     --layout-sidebar-gap: clamp(1.25rem, 3vw, 2.75rem);
-    --sidebar-top-offset: 2.4rem;
-    --page-padding: clamp(1rem, 3vw, 2rem);
+    --sidebar-top-offset: 4.1rem;
+    --page-padding: clamp(1.5rem, 5vw, 3rem);
     --page-radius: 18px;
     --page-border: 1px solid var(--color-page-edge);
     --page-outer-width: calc(var(--layout-content-width) + 2 * var(--page-padding) + 2px);
@@ -39,7 +39,7 @@
 
     /* Neutral surfaces: adjust lightness while keeping chroma at zero. */
     --color-page-background: oklch(97.5% 0 0);
-    --color-canvas-background: oklch(from var(--color-page-background) calc(l - 0.035) 0 0);
+    --color-canvas-background: oklch(from var(--color-page-background) calc(l - 0.025) 0 0);
     --color-page-background-darker: oklch(from var(--color-page-background) calc(l - 0.024) 0 0);
     --color-page-edge: oklch(from var(--color-page-background) calc(l - 0.04) 0 0);
     --color-border-subtle: oklch(88% 0 0);
@@ -99,11 +99,9 @@
     --link-underline-offset: 2px;
     --link-hover-background: transparent;
     --endnote-font-size: 0.75em;
-    --endnote-min-width: 1em;
-    --endnote-offset: -2px;
+    --endnote-offset: -0.45em;
     --endnote-margin: 0 0.1em;
-    --endnote-radius: 3px;
-    --endnote-background: oklch(95% 0.008 260.686);
+    --endnote-font-weight: 500;
 
     /* Rules and code blocks. */
     --rule-height: 1px;
@@ -374,21 +372,16 @@ a.en {
     text-decoration: none;
     font-family: var(--sans);
     font-size: var(--endnote-font-size);
-    display: inline-block;
     position: relative;
-    min-width: var(--endnote-min-width);
+    line-height: 0;
     top: var(--endnote-offset);
     margin: var(--endnote-margin);
-    border: 1px solid var(--color-border-subtle);
-    background-color: var(--endnote-background);
-    border-radius: var(--endnote-radius);
     color: var(--color-primary-darker);
-    font-weight: 700;
-    text-align: center;
+    font-weight: var(--endnote-font-weight);
 }
 
 a.en:hover {
-    border-color: var(--color-secondary-dark);
+    text-decoration-line: underline;
 }
 
 dt {
