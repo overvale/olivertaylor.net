@@ -16,7 +16,7 @@
     --sidebar-top-offset: 2.4rem;
     --page-padding: clamp(1rem, 3vw, 2rem);
     --page-radius: 18px;
-    --page-border: 1px solid oklch(from var(--color-page-background) calc(l - 0.035) c h);
+    --page-border: 1px solid var(--color-page-edge);
     --page-outer-width: calc(var(--layout-content-width) + 2 * var(--page-padding) + 2px);
 
     /* Navigation box and internal spacing. */
@@ -37,11 +37,25 @@
     --nav-link-stretch: 107%;
     --nav-link-weight: 450;
 
-    /* Page colors. */
-    --color-page-background: #f7f7f4;
-    --color-canvas-background: oklch(from var(--color-page-background) calc(l - 0.035) c h);
-    /* Preserve the page hue; lower lightness and gently increase chroma. */
-    --color-page-background-darker: oklch(from var(--color-page-background) calc(l - 0.024) calc(c + 0.005) h);
+    /* Neutral surfaces: adjust lightness while keeping chroma at zero. */
+    --color-page-background: oklch(97.5% 0 0);
+    --color-canvas-background: oklch(from var(--color-page-background) calc(l - 0.035) 0 0);
+    --color-page-background-darker: oklch(from var(--color-page-background) calc(l - 0.024) 0 0);
+    --color-page-edge: oklch(from var(--color-page-background) calc(l - 0.04) 0 0);
+    --color-border-subtle: oklch(88% 0 0);
+    --color-border-control: oklch(62% 0 0);
+
+    /* Color roles: accents come from the palette in nasa-colors.css. */
+    --color-text: var(--color-base);
+    --color-nav-text: var(--color-primary-darkest);
+    --color-muted-text: var(--color-gray);
+    --color-code-text: var(--color-green-racing);
+    --color-callout-marker: var(--color-secondary-dark);
+    --color-link-underline: var(--color-secondary);
+    --color-link-underline-hover: var(--color-secondary-darkest);
+    --color-focus-ring: var(--color-primary);
+    --color-selection-background: var(--color-cool-blue-lightest);
+    --color-selection-text: var(--color-base);
 
     /* Body typography and spacing. */
     --body-font-size: 18px;
@@ -114,7 +128,7 @@
 
     /* Figures and captions. */
     --figure-margin: 1em auto;
-    --figure-border: 1px solid var(--color-gray-lighter);
+    --figure-border: 1px solid var(--color-border-subtle);
     --page-image-top-space: 4rem;
     --image-filter: grayscale(1);
     --image-blend-mode: multiply;
@@ -122,13 +136,13 @@
     --caption-font-weight: 450;
     --caption-font-size: 0.85rem;
     --caption-padding: 0.6rem 0.5rem 0.4rem;
-    --caption-background: var(--color-gray-lightest);
+    --caption-background: var(--color-page-background-darker);
 
     /* Links page. */
     --links-image-max-height: 18rem;
     --link-entry-top-space: 1.5em;
     --link-entry-padding: 1em;
-    --link-entry-border: 1px solid var(--color-gray-cool-light);
+    --link-entry-border: 1px solid var(--color-border-subtle);
 
     color-scheme: light;
     font: -apple-system-body;
@@ -143,7 +157,7 @@
 body {
     margin: 0;
     position: relative;
-    color: var(--color-base);
+    color: var(--color-text);
     background-color: var(--color-canvas-background);
     text-wrap: pretty;
     /* This matches macOS and iOS rendering: */
@@ -153,7 +167,7 @@ body {
 }
 
 header {
-    color: var(--color-primary-darkest);
+    color: var(--color-nav-text);
 }
 
 main {
@@ -272,7 +286,7 @@ main {
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--sans);
     font-weight: var(--heading-font-weight);
-    color: var(--color-base);
+    color: var(--color-text);
     text-wrap: balance;
 }
 
@@ -337,7 +351,7 @@ blockquote {
 
 a {
     color: inherit;
-    text-decoration-color: var(--color-secondary);
+    text-decoration-color: var(--color-link-underline);
     text-decoration-style: solid;
     text-decoration-thickness: var(--link-underline-thickness);
     text-underline-offset: var(--link-underline-offset);
@@ -345,7 +359,12 @@ a {
 
 a:hover {
     background-color: var(--link-hover-background);
-    text-decoration-color: var(--color-secondary-darkest);
+    text-decoration-color: var(--color-link-underline-hover);
+}
+
+a:focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 3px;
 }
 
 a.en {
@@ -382,7 +401,7 @@ hr {
     height: var(--rule-height);
     margin: var(--rule-margin);
     width: var(--rule-width);
-    background: var(--color-gray-lighter);
+    background: var(--color-border-subtle);
 }
 
 .callout {
@@ -395,7 +414,7 @@ hr {
 }
 .callout > :first-child::before {
     content: "¶ \2008";
-    color: var(--color-secondary);
+    color: var(--color-callout-marker);
 }
 
 /* ---- Code ---- */
@@ -404,7 +423,7 @@ code {
     font-family: var(--mono);
     font-size: var(--code-font-size);
     line-height: var(--code-line-height); /* needed for mono font */
-    color: var(--color-green-racing);
+    color: var(--color-code-text);
     border-radius: var(--code-radius);
 }
 
@@ -413,7 +432,7 @@ pre {
     line-height: var(--code-block-line-height);
     margin: var(--code-block-margin);
     padding: var(--code-block-padding);
-    color: var(--color-green-racing);
+    color: var(--color-code-text);
     background: var(--code-block-background);
     border-radius: var(--code-block-radius);
 
@@ -428,7 +447,7 @@ pre code {
 time.permalink {
     font-family: var(--sans);
     font-size: var(--permalink-font-size);
-    color: var(--color-gray);
+    color: var(--color-muted-text);
 }
 
 time.permalink a {
@@ -477,12 +496,12 @@ article > .pdf-download a {
     font-size: var(--download-font-size);
     padding: var(--download-padding);
     background-color: transparent;
-    border: 1px solid var(--color-gray-light);
+    border: 1px solid var(--color-border-control);
     border-radius: var(--download-radius);
 }
 
 article > .pdf-download a:hover {
-    background-color: var(--color-gray-lightest);
+    background-color: var(--color-page-background-darker);
 }
 
 /* ---- Figures ---- */
@@ -561,8 +580,8 @@ div.link {
 /* -- Global -------------------------------------------------- */
 
 ::selection {
-    background-color: var(--color-cool-blue-lightest);
-    color: var(--color-base);
+    background-color: var(--color-selection-background);
+    color: var(--color-selection-text);
 }
 
 /* -- Responsive ---------------------------------------------- */

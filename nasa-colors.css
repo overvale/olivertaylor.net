@@ -1,55 +1,57 @@
-/* NASA Web Design System color palette
+/* NASA Web Design System color palette, converted to OKLCH.
+   Original sRGB appearance preserved; site surface roles live in style.css.
+   Racing green is a site addition.
    Source: https://nasa.github.io/nasawds-site/components/colors/ */
 
 :root {
     /* Primary */
-    --color-primary:          #105bd8;
-    --color-primary-darker:   #0b3d91;
-    --color-primary-darkest:  #061f4a;
-    --color-base:             #212121;
-    --color-gray-dark:        #323a45;
-    --color-gray-light:       #aeb0b5;
-    --color-white:            #ffffff;
+    --color-primary:          oklch(51.034158% 0.20400672 260.829779);
+    --color-primary-darker:   oklch(38.579571% 0.14812418 260.685984);
+    --color-primary-darkest:  oklch(25.053043% 0.08598433 260.334970);
+    --color-base:             oklch(24.775871% 0.00000000 0.000000);
+    --color-gray-dark:        oklch(34.554563% 0.02213331 256.391416);
+    --color-gray-light:       oklch(75.711288% 0.00745424 268.528913);
+    --color-white:            oklch(99.999999% 0.00000000 0.000000);
 
     /* Secondary */
-    --color-primary-alt:           #02bfe7;
-    --color-primary-alt-darkest:   #046b99;
-    --color-primary-alt-dark:      #00a6d2;
-    --color-primary-alt-light:     #9bdaf1;
-    --color-primary-alt-lightest:  #e1f3f8;
-    --color-secondary:             #dd361c;
-    --color-secondary-darkest:     #99231b;
-    --color-secondary-dark:        #c62d1f;
-    --color-secondary-light:       #e59892;
-    --color-secondary-lightest:    #f9e0de;
+    --color-primary-alt:           oklch(74.442731% 0.13541460 220.101694);
+    --color-primary-alt-darkest:   oklch(50.040691% 0.10839208 237.212436);
+    --color-primary-alt-dark:      oklch(67.485020% 0.12826043 225.343412);
+    --color-primary-alt-light:     oklch(85.368002% 0.07127397 222.664923);
+    --color-primary-alt-lightest:  oklch(95.232654% 0.02017509 216.196280);
+    --color-secondary:             oklch(58.969005% 0.20680206 31.684138);
+    --color-secondary-darkest:     oklch(45.024846% 0.15533478 28.830195);
+    --color-secondary-dark:        oklch(54.160174% 0.19129425 29.819125);
+    --color-secondary-light:       oklch(75.476500% 0.09374138 24.417425);
+    --color-secondary-lightest:    oklch(92.649250% 0.02777897 23.155267);
 
     /* Background grays */
-    --color-gray:              #5b616b;
-    --color-gray-lighter:      #d6d7d9;
-    --color-gray-lightest:     #f1f1f1;
-    --color-gray-warm-dark:    #494440;
-    --color-gray-warm-light:   #e4e2e0;
-    --color-gray-cool-light:   #dce4ef;
+    --color-gray:              oklch(49.090668% 0.01766265 260.705418);
+    --color-gray-lighter:      oklch(87.896688% 0.00294370 264.540766);
+    --color-gray-lightest:     oklch(95.814688% 0.00000000 0.000000);
+    --color-gray-warm-dark:    oklch(39.025654% 0.00952620 61.227279);
+    --color-gray-warm-light:   oklch(91.378138% 0.00347582 67.780047);
+    --color-gray-cool-light:   oklch(91.603583% 0.01728571 256.283751);
 
     /* Tertiary */
-    --color-gold:           #ff9d1e;
-    --color-gold-light:     #f9aa43;
-    --color-gold-lighter:   #ffc375;
-    --color-gold-lightest:  #ffebd1;
+    --color-gold:           oklch(77.943376% 0.16808584 64.978122);
+    --color-gold-light:     oklch(79.743296% 0.14723995 69.516202);
+    --color-gold-lighter:   oklch(85.551044% 0.11766216 72.406114);
+    --color-gold-lightest:  oklch(94.937795% 0.04055287 74.468977);
 
-    --color-green:           #2e8540;
-    --color-green-light:     #4aa564;
-    --color-green-lighter:   #94bfa2;
-    --color-green-lightest:  #e7f4e4;
+    --color-green:           oklch(54.776234% 0.13276499 147.394094);
+    --color-green-light:     oklch(64.966341% 0.13026139 150.598709);
+    --color-green-lighter:   oklch(76.555194% 0.06169676 155.196837);
+    --color-green-lightest:  oklch(95.307805% 0.02525457 139.835418);
 
-    --color-cool-blue:           #205493;
-    --color-cool-blue-light:     #4773aa;
-    --color-cool-blue-lighter:   #8ba6ca;
-    --color-cool-blue-lightest:  #dce4ef;
+    --color-cool-blue:           oklch(44.548942% 0.11715082 255.206235);
+    --color-cool-blue-light:     oklch(54.856461% 0.09933838 254.734761);
+    --color-cool-blue-lighter:   oklch(71.751393% 0.06077245 255.719268);
+    --color-cool-blue-lightest:  oklch(91.603583% 0.01728571 256.283751);
 
-    --color-green-racing: #004225;
+    --color-green-racing: oklch(33.359270% 0.07945622 156.981448);
 
     /* State */
-    --color-focus:    #aeb0b5;
-    --color-visited:  #4c2c92;
+    --color-focus:    oklch(75.711288% 0.00745424 268.528913);
+    --color-visited:  oklch(39.548080% 0.15801713 291.967416);
 }
