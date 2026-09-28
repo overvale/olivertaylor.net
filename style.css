@@ -8,29 +8,134 @@
     --serif: "Source Serif 4", ui-serif, serif;
     --mono: "Geist Mono", ui-monospace, monospace;
 
-
+    /* Page layout. */
+    --layout-gutter: 2rem;
     --layout-content-width: 65ch;
-    --layout-content-max-width: calc(100vw - 2rem);
     --layout-page-bottom-space: 10em;
     --layout-sidebar-gap: clamp(1.25rem, 3vw, 2.75rem);
-    --heading-font-size: 1.6rem;
-    --heading-line-height: 1.25;
-    --heading-top-offset: 4rem;
-    --sidebar-top-offset: 3rem;
-    --desktop-heading-top-offset: 2.5rem;
+    --sidebar-top-offset: 2.4rem;
+    --page-padding: clamp(1rem, 3vw, 2rem);
+    --page-radius: 18px;
+    --page-border: 1px solid oklch(from var(--color-page-background) calc(l - 0.035) c h);
+    --page-outer-width: calc(var(--layout-content-width) + 2 * var(--page-padding) + 2px);
+
+    /* Navigation box and internal spacing. */
+    --nav-box-background: transparent;
+    --nav-box-border: none;
+    --nav-box-radius: 9px;
+    --nav-box-padding: 1rem 1.4rem;
+    --nav-box-min-width: 8rem;
+    --nav-box-max-width: 10rem;
+    --nav-box-top-space: 1.5rem;
+    --nav-box-side-space: auto;
+    --nav-title-gap: 1.4rem;
+    --nav-link-gap: 0.35rem;
     --nav-font-size: 1rem;
     --nav-line-height: 1.35;
     --site-title-weight: 560;
+    --site-title-stretch: 110%;
+    --nav-link-stretch: 107%;
     --nav-link-weight: 450;
+
+    /* Page colors. */
     --color-page-background: #f7f7f4;
-    --color-page-background-darker: #efefeb;
+    --color-canvas-background: oklch(from var(--color-page-background) calc(l - 0.035) c h);
+    /* Preserve the page hue; lower lightness and gently increase chroma. */
+    --color-page-background-darker: oklch(from var(--color-page-background) calc(l - 0.024) calc(c + 0.005) h);
+
+    /* Body typography and spacing. */
+    --body-font-size: 18px;
+    --body-font-weight: 450;
+    --body-line-height: 1.55;
+    --paragraph-bottom-space: 1.5em;
+    --strong-font-weight: 700;
+    --emphasis-font-weight: 500;
+    --smallcaps-font-size: 0.9em;
+    --definition-top-space: 1em;
+
+    /* Headings. */
+    --heading-font-size: 1.6rem;
+    --heading-line-height: 1.25;
+    --heading-bottom-space: 1.35rem;
+    --heading-top-offset: 4rem;
+    --desktop-heading-top-offset: 2.5rem;
+    --heading-font-weight: 600;
+    --heading-font-stretch: 95%;
+    --h2-font-size: 1.3rem;
+    --h2-margin: 6rem 0 3rem 0;
+    --h2-padding: 0.55rem;
+    --h2-border: 2px solid var(--color-gray-dark);
+    --h3-font-size: 1.05rem;
+    --h3-font-stretch: 105%;
+    --h3-margin: 6rem 0 1.1rem 0;
+    --h3-after-h2-space: 2.4rem;
+
+    /* Blockquotes and callouts. */
+    --quote-font-size: .95rem;
+    --quote-padding: 1px 1.4rem;
+    --quote-color: var(--color-primary-darker);
+    --quote-background: var(--color-page-background-darker);
+    --quote-radius: 9px;
+    --callout-margin: 0 1.4rem;
+    --callout-indent: -1em;
+
+    /* Links and endnote markers. */
+    --link-underline-thickness: 0.06em;
+    --link-underline-offset: 2px;
+    --link-hover-background: var(--color-gold-lightest);
+    --endnote-font-size: 0.75em;
+    --endnote-min-width: 1em;
+    --endnote-offset: -2px;
+    --endnote-margin: 0 0.1em;
+    --endnote-radius: 3px;
+
+    /* Rules and code blocks. */
+    --rule-height: 1px;
+    --rule-margin: 3rem auto;
+    --rule-width: 80%;
+    --code-font-size: 1rem;
+    --code-line-height: 0.5;
+    --code-radius: 3px;
+    --code-block-line-height: 1.2;
+    --code-block-margin: 0 0 1.4rem 0;
+    --code-block-padding: 1.4rem;
+    --code-block-background: var(--color-page-background-darker);
+    --code-block-radius: 9px;
+    --code-block-font-size: .95rem;
+
+    /* Dates, article metadata, and download links. */
+    --permalink-font-size: 0.85rem;
+    --permalink-marker-gap: 0.5rem;
+    --metadata-font-size: 0.9rem;
+    --metadata-color: var(--color-cool-blue);
+    --download-font-size: 0.9em;
+    --download-padding: 0.15em 0.5em;
+    --download-radius: 6px;
+
+    /* Figures and captions. */
+    --figure-margin: 1em auto;
+    --figure-border: 1px solid var(--color-gray-lighter);
+    --page-image-top-space: 4rem;
+    --image-filter: grayscale(1);
+    --image-blend-mode: multiply;
+    --image-transition: filter 180ms ease;
+    --caption-font-weight: 450;
+    --caption-font-size: 0.85rem;
+    --caption-padding: 0.6rem 0.5rem 0.4rem;
+    --caption-background: var(--color-gray-lightest);
+
+    /* Links page. */
+    --links-image-max-height: 18rem;
+    --link-entry-top-space: 1.5em;
+    --link-entry-padding: 1em;
+    --link-entry-border: 1px solid var(--color-gray-cool-light);
 
     color-scheme: light;
     font: -apple-system-body;
-    font-size: 18px;
+    font-size: var(--body-font-size);
     font-family: var(--serif);
-    font-weight: 450;
-    line-height: 1.55;
+    font-weight: var(--body-font-weight);
+    line-height: var(--body-line-height);
 }
 
 /* -- Layout -------------------------------------------------- */
@@ -39,7 +144,7 @@ body {
     margin: 0;
     position: relative;
     color: var(--color-base);
-    background-color: var(--color-page-background);
+    background-color: var(--color-canvas-background);
     text-wrap: pretty;
     /* This matches macOS and iOS rendering: */
     -webkit-font-smoothing: antialiased;
@@ -52,19 +157,30 @@ header {
 }
 
 main {
-    max-width: var(--layout-content-width);
-    margin: 0 auto var(--layout-page-bottom-space);
-    padding: 0 1rem;
+    box-sizing: border-box;
+    display: flow-root;
+    width: calc(100% - 2 * var(--layout-gutter));
+    max-width: var(--page-outer-width);
+    min-height: calc(100vh - 2 * var(--layout-gutter));
+    margin: var(--layout-gutter) auto;
+    padding: 0 var(--page-padding) var(--layout-page-bottom-space);
+    background: var(--color-page-background);
+    border: var(--page-border);
+    border-radius: var(--page-radius);
 }
-
 
 /* -- Header -------------------------------------------------- */
 
 .header-inner {
     font-family: var(--serif); /* used to calculate ch width */
-    max-width: var(--layout-content-width);
-    margin: 0 auto;
-    padding: 1.5rem 1rem 0;
+    box-sizing: border-box;
+    width: calc(100% - 2 * var(--layout-gutter));
+    max-width: var(--page-outer-width);
+    margin: var(--nav-box-top-space) var(--nav-box-side-space) 0;
+    padding: var(--nav-box-padding);
+    background: var(--nav-box-background);
+    border: var(--nav-box-border);
+    border-radius: var(--nav-box-radius);
 }
 
 .site-title,
@@ -81,7 +197,7 @@ main {
     color: inherit;
     text-decoration: none;
     font-weight: var(--site-title-weight);
-    font-stretch: 110%;
+    font-stretch: var(--site-title-stretch);
     text-wrap: balance;
 }
 
@@ -89,14 +205,14 @@ main {
 
 .header-nav {
     font-weight: var(--nav-link-weight);
-    font-stretch: 107%;
-    margin-top: 1.4rem;
+    font-stretch: var(--nav-link-stretch);
+    margin-top: var(--nav-title-gap);
 }
 
 .header-nav ul {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: var(--nav-link-gap);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -117,14 +233,20 @@ main {
 }
 
 @media (min-width: 760px) {
+    :root {
+        --heading-top-offset: var(--desktop-heading-top-offset);
+        --nav-box-top-space: var(--sidebar-top-offset);
+        --nav-box-side-space: 0;
+    }
+
     body {
         box-sizing: border-box;
         display: grid;
-        grid-template-columns: minmax(8rem, 12rem) minmax(0, var(--layout-content-width));
+        grid-template-columns: minmax(var(--nav-box-min-width), var(--nav-box-max-width)) minmax(0, var(--page-outer-width));
         column-gap: var(--layout-sidebar-gap);
         justify-content: center;
         align-items: start;
-        padding: 0 1rem;
+        padding: 0 var(--layout-gutter);
     }
 
     header {
@@ -133,67 +255,57 @@ main {
     }
 
     .header-inner {
+        width: auto;
         max-width: none;
-        margin: 0;
-        padding: var(--sidebar-top-offset) 0 0;
     }
 
     main {
         grid-column: 2;
         width: 100%;
         max-width: none;
-        margin: 0 0 var(--layout-page-bottom-space);
-        padding: 0;
     }
 
 }
 
 /* -- Content Elements ---------------------------------------------- */
 
-
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--sans);
-    font-weight: 600;
+    font-weight: var(--heading-font-weight);
     color: var(--color-base);
     text-wrap: balance;
 }
 
 h1 {
     font-size: var(--heading-font-size);
-    font-stretch: 95%;
+    font-stretch: var(--heading-font-stretch);
     line-height: var(--heading-line-height);
-    margin: var(--heading-top-offset) 0 1.35rem 0;
-}
-
-@media (min-width: 760px) {
-    h1 {
-        margin: var(--desktop-heading-top-offset) 0 1.35rem 0;
-    }
+    margin: var(--heading-top-offset) 0 var(--heading-bottom-space) 0;
 }
 
 h2 {
-    font-size: 1.3rem;
+    font-size: var(--h2-font-size);
     position: relative;
-    margin: 6rem 0 3rem 0;
-    padding-top: 0.55rem;
-    padding-bottom: 0.55rem;
-    border-top: 2px solid var(--color-gray-dark);
+    margin: var(--h2-margin);
+    padding-top: var(--h2-padding);
+    padding-bottom: var(--h2-padding);
+    border-top: var(--h2-border);
 }
 
 h3 {
-    font-size: 1.05rem;
-    font-stretch: 105%;
+    font-size: var(--h3-font-size);
+    font-stretch: var(--h3-font-stretch);
     position: relative;
-    margin: 6rem 0 1.1rem 0;
+    margin: var(--h3-margin);
 }
 
 h2 + h3 {
-    margin-top: 2.4rem;
+    margin-top: var(--h3-after-h2-space);
 }
 
 .smallcaps {
     text-transform: uppercase;
-    font-size: 0.9em;
+    font-size: var(--smallcaps-font-size);
 }
 
 h1 .smallcaps, h2 .smallcaps, h3 .smallcaps, h4 .smallcaps {
@@ -202,62 +314,63 @@ h1 .smallcaps, h2 .smallcaps, h3 .smallcaps, h4 .smallcaps {
 }
 
 p {
-    margin-block-end: 1.5em;
+    margin-block-end: var(--paragraph-bottom-space);
 }
 
 b, strong {
-    font-weight: 700;
+    font-weight: var(--strong-font-weight);
 }
 
 i, em {
-    font-weight: 500;
+    font-weight: var(--emphasis-font-weight);
 }
 
 blockquote {
-    font-size: .95rem;
-    margin: 0rem;
-    padding: 1px 1.4rem;
-    color: var(--color-primary-darker);
-    background: var(--color-page-background-darker);
-    border-radius: 9px;
+    font-size: var(--quote-font-size);
+    margin: 0;
+    margin-left: 1.4rem;
+    padding: var(--quote-padding);
+    color: var(--quote-color);
+    background: var(--quote-background);
+    border-radius: var(--quote-radius);
 }
 
 a {
     color: inherit;
     text-decoration-color: var(--color-secondary);
-    text-decoration-style: underline;
-    text-decoration-thickness: 0.06em;
-    text-underline-offset: 2px;
+    text-decoration-style: solid;
+    text-decoration-thickness: var(--link-underline-thickness);
+    text-underline-offset: var(--link-underline-offset);
 }
 
 a:hover {
-    background-color: var(--color-gold-lightest);
+    background-color: var(--link-hover-background);
     text-decoration-color: var(--color-secondary-darkest);
 }
 
 a.en {
     text-decoration: none;
     font-family: var(--sans);
-    font-size: 0.75em;
+    font-size: var(--endnote-font-size);
     display: inline-block;
     position: relative;
-    min-width: 1em;
-    top: -2px;
-    margin: 0 0.1em;
+    min-width: var(--endnote-min-width);
+    top: var(--endnote-offset);
+    margin: var(--endnote-margin);
     border: 1px solid var(--color-gray-cool-light);
     background-color: var(--color-primary-alt-lightest);
-    border-radius: 3px;
+    border-radius: var(--endnote-radius);
     color: var(--color-primary);
     font-weight: 700;
     text-align: center;
 }
 
 a.en:hover {
-    border: 1px solid var(--color-gold);
+    border-color: var(--color-gold);
 }
 
 dt {
-    margin-top: 1em;
+    margin-top: var(--definition-top-space);
 }
 
 img {
@@ -266,62 +379,56 @@ img {
 
 hr {
     border: none;
-    height: 1px;
-    margin: 3rem auto;
-    width: 80%;
+    height: var(--rule-height);
+    margin: var(--rule-margin);
+    width: var(--rule-width);
     background: var(--color-gray-lighter);
 }
 
 .callout {
-    margin: 0 1.4rem;
+    margin: var(--callout-margin);
     font-style: italic;
 }
 
 .callout > :first-child {
-    text-indent: -1em;
+    text-indent: var(--callout-indent);
 }
 .callout > :first-child::before {
     content: "¶ \2008";
     color: var(--color-secondary);
 }
 
-
 /* ---- Code ---- */
 
 code {
     font-family: var(--mono);
-    font-size: 1rem;
-    line-height: 0.5; /* needed for mono font */
+    font-size: var(--code-font-size);
+    line-height: var(--code-line-height); /* needed for mono font */
     color: var(--color-green-racing);
-    border-radius: 3px;
+    border-radius: var(--code-radius);
 }
 
 pre {
     overflow-x: auto;
-    line-height: 1.2;
-    margin: 0 0 1.4rem 0;
-    padding: 1.4rem;
+    line-height: var(--code-block-line-height);
+    margin: var(--code-block-margin);
+    padding: var(--code-block-padding);
     color: var(--color-green-racing);
-    background: var(--color-page-background-darker);
-    border-radius: 9px;
+    background: var(--code-block-background);
+    border-radius: var(--code-block-radius);
 
 }
 
 pre code {
-    font-size: .95rem;
+    font-size: var(--code-block-font-size);
 }
 
 /* ---- Links Dates ---- */
 
 time.permalink {
     font-family: var(--sans);
-    font-size: 0.85rem;
+    font-size: var(--permalink-font-size);
     color: var(--color-gray);
-}
-
-time.permalink:before {
-    content: "➤";
-    margin-right: 0.5rem;
 }
 
 time.permalink a {
@@ -346,9 +453,9 @@ article > .date,
 article > .byline,
 article > .abstract,
 article > .pdf-download {
-    color: var(--color-cool-blue);
+    color: var(--metadata-color);
     font-family: var(--sans);
-    font-size: 0.9rem;
+    font-size: var(--metadata-font-size);
 }
 
 article > .date::before {
@@ -364,33 +471,26 @@ article > .byline {
     margin: 0;
 }
 
-article > .date::before,
-article > .byline::before {
-    color: var(--color-cool-blue);
-}
-
 article > .pdf-download a {
     color: var(--color-primary-darkest);
     text-decoration: none;
-    font-size: 0.9em;
-    padding: 0.1em 0.4em;
+    font-size: var(--download-font-size);
+    padding: var(--download-padding);
     background-color: transparent;
     border: 1px solid var(--color-gray-light);
-    border-radius: 6px;
+    border-radius: var(--download-radius);
 }
 
 article > .pdf-download a:hover {
-    color: var(--color-primary-darkest);
     background-color: var(--color-gray-lightest);
 }
-
 
 /* ---- Figures ---- */
 
 figure {
-    margin: 1em auto;
+    margin: var(--figure-margin);
     padding: 0;
-    border: 1px solid var(--color-gray-lighter);
+    border: var(--figure-border);
     background-color: transparent;
     max-width: 100%;
     box-sizing: border-box;
@@ -408,13 +508,13 @@ figure p {
 
 #home figure.home-image,
 figure.page-image {
-    margin-top: 4rem;
+    margin-top: var(--page-image-top-space);
 }
 
 main img {
-    filter: grayscale(1);
-    mix-blend-mode: multiply;
-    transition: filter 180ms ease;
+    filter: var(--image-filter);
+    mix-blend-mode: var(--image-blend-mode);
+    transition: var(--image-transition);
 }
 
 main img:hover {
@@ -424,18 +524,17 @@ main img:hover {
 
 figure.transparent-image {
     border: none;
-    background-color: transparent;
 }
 
 figcaption {
     font-family: var(--sans);
-    font-weight: 450;
-    font-size: 0.85rem;
+    font-weight: var(--caption-font-weight);
+    font-size: var(--caption-font-size);
     text-align: center;
     text-wrap: balance;
-    padding: 0.6rem 0.5rem 0.4rem;
-    border-top: 1px solid var(--color-gray-lighter);
-    background-color: var(--color-gray-lightest);
+    padding: var(--caption-padding);
+    border-top: var(--figure-border);
+    background-color: var(--caption-background);
 }
 
 /* -- Links Page ---------------------------------------------- */
@@ -449,16 +548,15 @@ figcaption {
 }
 
 #links figure.page-image img {
-    max-height: 18rem;
+    max-height: var(--links-image-max-height);
     width: auto;
 }
 
 div.link {
-    margin-top: 1.5em;
-    padding-top: 1em;
-    border-top: 1px solid var(--color-gray-cool-light);
+    margin-top: var(--link-entry-top-space);
+    padding-top: var(--link-entry-padding);
+    border-top: var(--link-entry-border);
 }
-
 
 /* -- Global -------------------------------------------------- */
 
@@ -469,25 +567,22 @@ div.link {
 
 /* -- Responsive ---------------------------------------------- */
 
-@media (max-width: 480px) {
+@media (width < 760px) {
     :root {
-        font-size: 21px;
-    }
-
-    .header-inner {
-        height: auto;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.1rem;
-        padding: 0.5rem 1rem;
-    }
-
-    .header-nav {
-        margin-left: 0;
+        --nav-box-top-space: var(--layout-gutter);
+        --nav-box-padding: 0.5rem var(--page-padding);
+        --nav-title-gap: 0.4rem;
+        --nav-link-gap: 0.4rem 1.1rem;
     }
 
     .header-nav ul {
+        flex-direction: row;
         flex-wrap: wrap;
-        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --body-font-size: 21px;
     }
 }
