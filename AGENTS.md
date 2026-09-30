@@ -1,5 +1,10 @@
 # Website working instructions
 
+## Context and discovery
+
+- This environment contains Oliver Taylor's website, `olivertaylor.net`. Start with this checkout and its instructions when answering questions about the site or published content.
+- Interpret questions about content, publishing, design, and site behavior in the context of this website unless Oliver names another project or service. Inspect the relevant local files and Git history before reaching for external apps or asking where the work lives. Use `origin/master` as the recorded publication baseline when distinguishing local changes from published content; verify the live site when the answer requires its current state.
+
 ## Workflow
 
 - This checkout contains both source and generated website files. There is no separate output directory or publishing repository.
