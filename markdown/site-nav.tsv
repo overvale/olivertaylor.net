@@ -1,0 +1,29 @@
+# section|path|title|description
+writing|/writing/structured-to-innovate|DARPA, Skunk Works, & Bell Labs: Structured to Innovate|An attempt to summarize the common ethos and project management approach of The Defense Advanced Research Projects Agency (DARPA), Lockheed Martin's Skunk Works, and AT&T's Bell Labs. And to create some basic guidance teams and organizations might adopt to follow in these organizations' footsteps.
+writing|/writing/systems-engineering-nasa|Systems Engineering at NASA|This study attempts to summarize how NASA's System Engineers operate in order to better understand how to manage complex technical projects.
+writing|/writing/systems-engineering-vfx|Systems Engineering for Visual Effects|This paper describes Systems Engineering, as practiced by NASA, and explores the application of its principles and techniques to the operation of visual effects (VFX) studios. It discusses challenges in VFX projects, like complexity management and technical/artistic integration, and proposes that VFX studios could improve their engineering and operations by adopting the perspective and methods of Systems Engineering.
+notes|/notes/black-ivy-style|Black Ivy Style Guide|
+notes|/notes/free_fonts|My Favorite Free Fonts|
+notes|/notes/papers|Recommended Papers|
+notes|/notes/macos_window_management|Built-In macOS Window Management Tools|
+notes|/notes/managing|Notes on Managing|
+notes|/notes/growth_thoughts|Thoughts on Growing a Company|
+notes|/notes/books|Recommended Books|
+notes|/notes/worth_the_money|Worth The Money|
+notes|/notes/software_love|Software I Love|
+notes|/notes/harrison_ford_movies|Harrison Ford Movies|
+notes|/notes/2007_movies|A Partial List of Movies Released in 2007|
+notes|/notes/revelation_complex|The Revelation of the Complex|
+notes|/notes/perfection|Perfection|
+notes|/notes/writing_in_plain_text|Writing In Plain-Text|
+emacs|/emacs/quick-help|Quick Help: Emacs as a Text Productivity Platform|
+emacs|/emacs/buffer-confirm-kill|Confirm Killing Modified Buffers|
+emacs|/emacs/custom-scratch-buffers|Custom Scratch Buffers|
+emacs|/emacs/keymap-prompt|Keymap Prompts|
+emacs|/emacs/mark-line-transient-command|Mark Line & Marking Transient Command|
+emacs|/emacs/kill-buffer-dwim|Kill Buffer DWIM|
+emacs|/emacs/mouse-window-splits|Splitting Windows With the Mouse|
+emacs|/emacs/bosskey-mode|Emacs Keybindings That Won't Get Overridden by Minor Modes|
+emacs|/emacs/notes-on-package-el|How Package.el Works with Use Package|
+emacs|/emacs/extending-emacs-bookmarks|Extending Emacs Bookmarks to Work With EWW|
+links|/links|Link Archive|

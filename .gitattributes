@@ -1,0 +1,3 @@
+*.pdf binary
+# Preserve third-party license text exactly as supplied.
+fonts/*-OFL.txt -whitespace

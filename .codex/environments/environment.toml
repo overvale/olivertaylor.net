@@ -1,0 +1,15 @@
+version = 1
+name = "olivertaylor.net"
+
+[setup]
+script = "make html"
+
+[[actions]]
+name = "Preview server"
+icon = "run"
+command = "make serve"
+
+[[actions]]
+name = "Build site"
+icon = "tool"
+command = "make build"

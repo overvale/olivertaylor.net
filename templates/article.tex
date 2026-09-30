@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.75in,columnsep=0.3in]{geometry}
+\usepackage{fontspec}
+\setmainfont{Brill}[
+  UprightFont    = Brill-Roman,
+  BoldFont       = Brill-Bold,
+  ItalicFont     = Brill-Italic,
+  BoldItalicFont = Brill-BoldItalic,
+  Ligatures      = TeX,
+  Numbers        = OldStyle,
+]
+\usepackage[
+  protrusion=true,
+  final,
+  tracking=true,
+  factor=1100
+]{microtype}
+\microtypecontext{spacing=nonfrench}
+\SetTracking{encoding=*, shape=sc}{40}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
+\definecolor{linkblue}{HTML}{1A5FB4}
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[colorlinks=false,pdfborder={0 0 0.5},pdfborderstyle={/S/U/W 0.5},urlbordercolor=linkblue,linkbordercolor=linkblue]{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage[
+  font={small,it},
+  labelfont={small,it},
+  justification=centering,
+  skip=6pt
+]{caption}
+
+\setkeys{Gin}{width=\columnwidth,keepaspectratio}
+
+% Narrow columns need more hyphenation flexibility.
+\tolerance=400
+\emergencystretch=3em
+\hyphenpenalty=50
+\exhyphenpenalty=50
+\hbadness=2000
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\pandocbounded}[1]{#1}
+
+\title{$title$}
+\author{$author$}
+\date{$dateline$}
+
+\begin{document}
+
+\makeatletter
+\twocolumn[%
+  \begin{@twocolumnfalse}
+    \maketitle
+    $if(abstract)$
+    \begin{center}
+    \begin{minipage}{0.72\textwidth}
+    \small\noindent $abstract$
+    \end{minipage}
+    \end{center}
+    \vspace{2em}
+    $endif$
+  \end{@twocolumnfalse}
+]
+\makeatother
+
+$body$
+
+\end{document}

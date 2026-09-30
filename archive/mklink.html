@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width = device-width" />
+  <link rel="stylesheet" type="text/css" href="/style.css" />
+  <title>Overvale Link Maker</title>
+
+  <!-- Created by ChatGPT -->
+
+  <style>
+    textarea {
+      width: 100%;
+      height: 200px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    pre#output {
+      min-height: 1em;
+      font-size: 12.5px;
+    }
+
+    label {
+      display: block;
+      margin-top: 1em;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main>
+
+    <h2>Create Link</h2>
+
+    <!-- The date field is auto-populated with today's date (YYYY-MM-DD) but is editable -->
+    <p>Date: <input type="date" id="date" /></p>
+
+    <label>Body (Markdown):</label>
+    <textarea id="markdown" placeholder=""></textarea>
+
+    <button onclick="convertToHtml()">Convert to HTML</button>
+
+    <hr>
+
+    <label>Output HTML:</label>
+    <pre id="output"></pre>
+    <button onclick="copyOutput()">Copy to Clipboard</button>
+
+  </main>
+
+  <!-- Include Showdown.js from a local copy -->
+  <script src="showdown.min.js"></script>
+  <script>
+    // Auto-populate the date input with today's date in YYYY-MM-DD format.
+    document.getElementById('date').value = new Date().toISOString().slice(0, 10);
+
+    // Initialize the Showdown converter.
+    var converter = new showdown.Converter();
+
+    // Convert the markdown to HTML and combine with the date into the final HTML block.
+    function convertToHtml() {
+      const date = document.getElementById('date').value;
+      const markdownText = document.getElementById('markdown').value;
+      const bodyHtml = converter.makeHtml(markdownText);
+      const finalHtml = '<div class="link">\n' +
+        '<time class="permalink"><a href="#' + date + '">' + date + '</a></time>\n' +
+        bodyHtml +
+        '\n</div>';
+      document.getElementById('output').textContent = finalHtml;
+    }
+
+    // Copy the output HTML to the clipboard.
+    function copyOutput() {
+      const outputText = document.getElementById('output').textContent;
+      navigator.clipboard.writeText(outputText)
+        .then(() => alert("Copied to clipboard!"))
+        .catch(err => alert("Failed to copy: " + err));
+    }
+  </script>
+</body>
+
+</html>

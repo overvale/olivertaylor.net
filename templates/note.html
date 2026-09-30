@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width = device-width" />
+<link rel="canonical" href="$canonical_url$" />
+<link rel="stylesheet" type="text/css" href="/style.css" />
+<title>$pagetitle$ @olivertaylor.net</title>
+</head>
+<body>
+$site_header$
+
+<main class="$class$">
+<article>
+<h1>$title$</h1>
+
+$if(dateline)$<p class="date">$dateline$</p>$endif$
+$if(abstract)$<p class="byline">$author$</p>
+<p class="abstract">$abstract$</p>
+$if(pdf_link)$<p class="pdf-download"><a href="$pdf_link$">Download article as PDF</a></p>$endif$
+$endif$
+$body$
+
+<footer>
+</footer>
+</article>
+</main>
+</body>
+</html>
