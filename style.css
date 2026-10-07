@@ -6,7 +6,7 @@
 :root {
     --sans: "Special Gothic", ui-sans-serif, sans-serif;
     --serif: "Source Serif 4", ui-serif, serif;
-    --mono: "Geist Mono", ui-monospace, monospace;
+    --mono: "Paper Mono", ui-monospace, monospace;
 
     /* Page layout. */
     --layout-gutter: 2rem;
@@ -109,6 +109,7 @@
     --rule-margin: 3rem auto;
     --rule-width: 80%;
     --code-font-size: 1rem;
+    --code-font-weight: 400;
     --code-line-height: 0.5;
     --code-radius: 3px;
     --code-block-line-height: 1.2;
@@ -420,6 +421,7 @@ hr {
 code {
     font-family: var(--mono);
     font-size: var(--code-font-size);
+    font-weight: var(--code-font-weight);
     line-height: var(--code-line-height); /* needed for mono font */
     color: var(--color-code-text);
     border-radius: var(--code-radius);
