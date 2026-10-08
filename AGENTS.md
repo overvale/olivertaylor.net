@@ -17,7 +17,7 @@
 
 ## Build and preview
 
-- Make, Bash, Python 3, and Pandoc are required. Full PDF builds also need XeLaTeX, Brill fonts, and the packages listed in `templates/article.tex`.
+- Use the shared environment setup recipe in README.md for dependencies, HTML verification, and optional PDF tooling. Keep dependency installation instructions there rather than duplicating them in service configuration.
 - `make html` retains existing PDFs and fails if an expected PDF is missing. Writing or PDF-template changes require a full build before publication. PDFs are reused based on modification times; fresh clones may regenerate them.
 - Codex setup runs `make html`; native actions run `make serve` and `make build`. Keep these as thin pointers to the same Makefile commands.
 - `make serve` prints the root directory and preview URL without opening a browser. Use Codex's native browser opener when showing the preview. Reuse an existing server for this checkout; stop it with Ctrl-C.
@@ -35,7 +35,7 @@
 
 ## Drafts and publication
 
-- The AI section is built only when `markdown/ai/index.md` exists. The unpublished AI drafts are plain files in `../olivertaylor.net-drafts/`. Do not import or publish them without Oliver's instruction.
-- Optional `drafts/` within this checkout is ignored and excluded from builds. Nothing is promoted automatically. Historical material in `archive/` is also excluded from builds.
+- The AI section is built only when `markdown/ai/index.md` exists. Keep private unpublished drafts outside the website repository and cloud checkout. Do not retrieve, copy, import, finalize, or publish them without Oliver's explicit instruction; do not assume a particular local draft path exists.
+- Optional `drafts/` within this checkout is ignored and excluded from builds, but is not storage for genuinely private material. Nothing is promoted automatically. Historical material in `archive/` is also excluded from builds.
 - Source and scripts may be public. Pushed branches are public even when not deployed; keep genuinely private material out of Git. Local-only drafts and unpushed branches do not follow a cloud checkout.
 - `.nojekyll` lets GitHub Pages serve the committed files directly. Keep the README focused on the public project overview and commands; maintain operational instructions here.
