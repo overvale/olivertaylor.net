@@ -31,13 +31,22 @@ if [ ! -f "$nav_file" ]; then
   exit 1
 fi
 
+# Bash 5.2 enables patsub_replacement by default. An unquoted & in a pattern
+# replacement then expands to the matched text, so "Won't" becomes "Won'#39;t"
+# and the <, >, and " entities break the same way. Run the substitutions in a
+# subshell with the option off so every entity stays literal whether or not
+# the caller has it enabled. Older Bash has no such option; the shopt error
+# is ignored.
 escape_html() {
-  local value="${1//&/&amp;}"
-  value="${value//</&lt;}"
-  value="${value//>/&gt;}"
-  value="${value//\"/&quot;}"
-  value="${value//\'/&#39;}"
-  printf '%s' "$value"
+  (
+    shopt -u patsub_replacement 2>/dev/null || true
+    value="${1//&/&amp;}"
+    value="${value//</&lt;}"
+    value="${value//>/&gt;}"
+    value="${value//\"/&quot;}"
+    value="${value//\'/&#39;}"
+    printf '%s' "$value"
+  )
 }
 
 # Wrap 2+ uppercase letter runs in <span class="smallcaps">...</span>,
