@@ -316,6 +316,79 @@ for md in "$src_root"/ai/*.md "$src_root"/emacs/*.md "$src_root"/notes/*.md "$sr
 done
 
 # --------------------------------------------------------------------------
+# 6. HTML escaping (Bash patsub_replacement)
+# --------------------------------------------------------------------------
+
+echo ""
+echo "=== HTML escaping ==="
+
+# Load the real escape_html from the build script and require valid entities
+# with patsub_replacement forced on and off. The on case is the Bash 5.2
+# default that used to emit Won'#39;t for an apostrophe.
+if bash --noprofile --norc -s <<'EOF'
+set -euo pipefail
+eval "$(sed -n '/^escape_html() {$/,/^}$/p' scripts/build.sh)"
+if ! declare -F escape_html >/dev/null; then
+  echo "  FAIL: could not load escape_html from scripts/build.sh" >&2
+  exit 1
+fi
+
+errors=0
+expect() {
+  local mode="$1" label="$2" input="$3" expected="$4" actual
+  actual="$(escape_html "$input")"
+  if [ "$actual" = "$expected" ]; then
+    printf '  ok: escape_html %s with patsub_replacement %s\n' "$label" "$mode"
+  else
+    printf '  FAIL: escape_html %s with patsub_replacement %s\n    expected: %s\n    actual:   %s\n' \
+      "$label" "$mode" "$expected" "$actual"
+    errors=$((errors + 1))
+  fi
+}
+
+run_cases() {
+  local mode="$1"
+  local label input expected
+  while IFS='|' read -r label input expected; do
+    [ -n "$label" ] || continue
+    expect "$mode" "$label" "$input" "$expected"
+  done <<'CASES'
+apostrophe|Won't|Won&#39;t
+ampersand|a&b|a&amp;b
+less-than|a<b|a&lt;b
+greater-than|a>b|a&gt;b
+quote|a"b|a&quot;b
+combined|Won't <b> "q" & x|Won&#39;t &lt;b&gt; &quot;q&quot; &amp; x
+CASES
+}
+
+if shopt -s patsub_replacement 2>/dev/null; then
+  run_cases on
+else
+  echo "  ok: patsub_replacement is unavailable in this Bash; on-mode regression skipped"
+fi
+shopt -u patsub_replacement 2>/dev/null || true
+run_cases off
+[ "$errors" -eq 0 ]
+EOF
+then
+  :
+else
+  fail "escape_html is not stable with patsub_replacement on and off"
+fi
+
+emacs_title='Emacs Keybindings That Won&#39;t Get Overridden by Minor Modes'
+for page in ./emacs/index.html ./notes/index.html; do
+  if [ -f "$page" ] &&
+     grep -Fq "$emacs_title" "$page" &&
+     ! grep -Fq "Won'#39;t" "$page"; then
+    pass "${page#./} keeps a valid apostrophe entity in the Emacs nav title"
+  else
+    fail "${page#./} has a broken apostrophe escape in the Emacs nav title"
+  fi
+done
+
+# --------------------------------------------------------------------------
 # Summary
 # --------------------------------------------------------------------------
 
