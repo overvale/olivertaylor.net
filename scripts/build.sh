@@ -24,7 +24,7 @@ mkdir -p ai notes emacs writing
 # A temporary file records generated outputs, not a separate website directory.
 generated_files=$(mktemp)
 trap 'rm -f "$generated_files"' EXIT
-printf '%s\n' index.html sitemap.xml notes/index.html emacs/index.html > "$generated_files"
+printf '%s\n' index.html sitemap.xml site-index.json notes/index.html emacs/index.html > "$generated_files"
 
 if [ ! -f "$nav_file" ]; then
   echo "Missing nav source: $nav_file"
@@ -78,15 +78,71 @@ render_header_nav() {
   echo '</nav>'
 }
 
+# The search control is a real link so it still goes somewhere with JS off.
+# palette.js turns it into the command palette and loads /site-index.json.
+render_palette_button() {
+  echo '<a class="palette-button" href="/notes/" aria-label="Search pages"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.25" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M15.2 15.2 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg></a>'
+}
+
 render_site_header() {
   local current_path="$1"
 
   echo '<header>'
   echo '<div class="header-inner">'
   echo '<a class="site-title" href="/">Oliver Taylor</a>'
+  # The button follows the nav so the desktop sidebar shows it underneath.
+  # Narrow screens place it beside the title with CSS grid areas.
   render_header_nav "$current_path"
+  render_palette_button
   echo '</div>'
+  echo '<script src="/palette.js" defer></script>'
   echo '</header>'
+}
+
+# Page list for the command palette. Section labels are part of each record
+# so the palette can show and search them without a second lookup table.
+render_site_index() {
+  python3 - "$nav_file" "$build_dir/site-index.json" <<'PYTHON'
+import json
+import sys
+from pathlib import Path
+
+labels = {
+    "writing": "Writing",
+    "notes": "Notes",
+    "emacs": "Emacs",
+    "links": "Links",
+    "ai": "AI",
+}
+pages = [{
+    "title": "Home",
+    "section": "Home",
+    "path": "/",
+    "description": "",
+}]
+for line in Path(sys.argv[1]).read_text(encoding="utf-8").splitlines():
+    if not line.strip() or line.lstrip().startswith("#"):
+        continue
+    parts = line.split("|")
+    if len(parts) < 3:
+        raise SystemExit(f"Invalid nav row: {line}")
+    section, path, title = parts[0], parts[1], parts[2]
+    description = "|".join(parts[3:])
+    if section not in labels:
+        raise SystemExit(f"Unknown nav section: {section}")
+    if not path.startswith("/") or not title:
+        raise SystemExit(f"Invalid nav row: {line}")
+    pages.append({
+        "title": title,
+        "section": labels[section],
+        "path": path,
+        "description": description,
+    })
+Path(sys.argv[2]).write_text(
+    json.dumps(pages, indent=2, ensure_ascii=False) + "\n",
+    encoding="utf-8",
+)
+PYTHON
 }
 
 render_index_page() {
@@ -242,6 +298,8 @@ done
 render_notes_index_page
 render_index_page "emacs" "Emacs Notes" "/emacs/" "$build_dir/emacs/index.html"
 
+render_site_index
+
 # Publish the canonical HTML URL inventory for search engines and agents.
 {
   echo '<?xml version="1.0" encoding="UTF-8"?>'
@@ -327,7 +385,7 @@ current = set(Path(sys.argv[1]).read_text().splitlines())
 previous = set(manifest.read_text().splitlines()) if manifest.exists() else set()
 for name in current | previous:
     path = Path(name)
-    allowed = name in {'index.html', 'sitemap.xml'} or (
+    allowed = name in {'index.html', 'sitemap.xml', 'site-index.json'} or (
         len(path.parts) == 2 and path.parts[0] in {'ai', 'notes', 'emacs', 'writing'}
         and path.suffix in {'.html', '.pdf'}
     )

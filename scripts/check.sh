@@ -389,6 +389,185 @@ for page in ./emacs/index.html ./notes/index.html; do
 done
 
 # --------------------------------------------------------------------------
+# 7. Command palette
+# --------------------------------------------------------------------------
+
+echo ""
+echo "=== Command palette ==="
+
+if [ -s ./palette.js ]; then
+  pass "palette.js exists"
+else
+  fail "palette.js is missing or empty"
+fi
+
+if grep -q '/site-index.json' ./palette.js &&
+   grep -q 'ArrowDown' ./palette.js &&
+   grep -q 'ArrowUp' ./palette.js &&
+   grep -q 'Escape' ./palette.js &&
+   grep -q 'combobox' ./palette.js &&
+   grep -q 'listbox' ./palette.js &&
+   grep -q 'page.section' ./palette.js &&
+   grep -q 'palette-section' ./palette.js; then
+  pass "palette.js searches titles and sections and uses combobox semantics"
+else
+  fail "palette.js is missing search, section labels, or combobox behavior"
+fi
+
+if grep -q 'event.code === "KeyK"' ./palette.js &&
+   grep -q 'toLowerCase() === "k"' ./palette.js &&
+   grep -q 'addEventListener("keydown", onKeydown, true)' ./palette.js &&
+   grep -q 'event.metaKey' ./palette.js &&
+   grep -q 'event.key === "/"' ./palette.js &&
+   grep -q 'google.com/search?q=' ./palette.js &&
+   grep -q 'site:olivertaylor.net' ./palette.js; then
+  pass "palette.js opens from Ctrl-K or Cmd-K and from slash, and can search Google"
+else
+  fail "palette.js is missing the keyboard shortcuts or Google site search"
+fi
+
+if [ -s ./style.css ] &&
+   grep -q '\.palette-button' ./style.css &&
+   grep -q '\.palette-dialog' ./style.css &&
+   grep -q '\.palette-section' ./style.css &&
+   grep -q '\.palette-web-option' ./style.css &&
+   grep -q '\.palette\[hidden\]' ./style.css; then
+  pass "style.css styles the command palette, including its section labels"
+else
+  fail "style.css is missing command palette styles"
+fi
+
+if grep -qx 'site-index.json' .generated-files; then
+  pass "site-index.json is tracked as generated output"
+else
+  fail "site-index.json is missing from .generated-files"
+fi
+
+if grep -qx 'palette.js' .generated-files; then
+  fail "palette.js is hand-written and should not be in .generated-files"
+else
+  pass "palette.js stays out of the generated-file inventory"
+fi
+
+palette_pages=(./links.html ./404.html)
+while IFS= read -r name; do
+  [ "${name%.html}" != "$name" ] || continue
+  palette_pages+=("./$name")
+done < .generated-files
+
+for page in "${palette_pages[@]}"; do
+  if [ -f "$page" ] &&
+     grep -q 'class="palette-button" href="/notes/"' "$page" &&
+     grep -q 'src="/palette.js"' "$page" &&
+     grep -q 'aria-label="Search pages"' "$page" &&
+     awk '
+       BEGIN { in_header = 0; saw_nav = 0; button_after_nav = 0 }
+       /<header>/ { in_header = 1 }
+       in_header && /<\/nav>/ { saw_nav = 1 }
+       in_header && /class="palette-button"/ { if (saw_nav) button_after_nav = 1 }
+       in_header && /<\/header>/ { exit }
+       END { exit button_after_nav ? 0 : 1 }
+     ' "$page"; then
+    pass "${page#./} includes the search button and palette script"
+  else
+    fail "${page#./} is missing the search button or palette script"
+  fi
+done
+
+if [ -f ./404.html ] &&
+   grep -q 'class="site-title" href="/">Oliver Taylor</a>' ./404.html &&
+   grep -q 'href="/writing/">Writing</a>' ./404.html &&
+   grep -q 'href="/notes/">Notes</a>' ./404.html &&
+   grep -q 'href="/links">Links</a>' ./404.html &&
+   ! grep -q 'Overvale' ./404.html &&
+   ! grep -q 'href="/emacs/"' ./404.html; then
+  pass "404.html uses the current site header"
+else
+  fail "404.html header is stale"
+fi
+
+if python3 - <<'PY'
+import json
+import sys
+from pathlib import Path
+
+labels = {
+    "writing": "Writing",
+    "notes": "Notes",
+    "emacs": "Emacs",
+    "links": "Links",
+    "ai": "AI",
+}
+errors = []
+index_path = Path("site-index.json")
+try:
+    pages = json.loads(index_path.read_text(encoding="utf-8"))
+except FileNotFoundError:
+    pages = None
+    errors.append("site-index.json is missing")
+except json.JSONDecodeError as exc:
+    pages = None
+    errors.append(f"site-index.json is not valid JSON ({exc})")
+
+expected = [{
+    "title": "Home",
+    "section": "Home",
+    "path": "/",
+    "description": "",
+}]
+for line in Path("markdown/site-nav.tsv").read_text(encoding="utf-8").splitlines():
+    if not line.strip() or line.lstrip().startswith("#"):
+        continue
+    parts = line.split("|")
+    if len(parts) < 3:
+        errors.append(f"invalid nav row: {line}")
+        continue
+    section, path, title = parts[0], parts[1], parts[2]
+    description = "|".join(parts[3:])
+    if section not in labels:
+        errors.append(f"unexpected nav section: {section}")
+        continue
+    expected.append({
+        "title": title,
+        "section": labels[section],
+        "path": path,
+        "description": description,
+    })
+
+if isinstance(pages, list):
+    if pages != expected:
+        errors.append(
+            f"site-index.json does not match site-nav.tsv ({len(pages)} records, expected {len(expected)})"
+        )
+        for index, (got, want) in enumerate(zip(pages, expected)):
+            if got != want:
+                errors.append(f"first mismatch at record {index}: got {got!r} want {want!r}")
+                break
+    else:
+        for page in pages:
+            path = page["path"]
+            if path.endswith(".html") or not path.startswith("/"):
+                errors.append(f"{path} is not an extensionless root path")
+                continue
+            html_path = Path("index.html") if path == "/" else Path(path[1:] + ".html")
+            if not html_path.is_file():
+                errors.append(f"no HTML file for {path}")
+            if not page["section"] or not page["title"]:
+                errors.append(f"{path} is missing a title or section")
+elif pages is not None:
+    errors.append("site-index.json must be a list")
+
+for error in errors:
+    print(f"  FAIL: {error}")
+sys.exit(1 if errors else 0)
+PY
+then
+  pass "site-index.json lists every nav page with its section"
+else
+  fail "site-index.json does not match site-nav.tsv"
+fi
+
+# --------------------------------------------------------------------------
 # Summary
 # --------------------------------------------------------------------------
 
