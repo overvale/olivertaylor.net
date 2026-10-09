@@ -1,0 +1,170 @@
+[
+  {
+    "title": "DARPA, Skunk Works, & Bell Labs: Structured to Innovate",
+    "section": "Writing",
+    "path": "/writing/structured-to-innovate",
+    "description": "An attempt to summarize the common ethos and project management approach of The Defense Advanced Research Projects Agency (DARPA), Lockheed Martin's Skunk Works, and AT&T's Bell Labs. And to create some basic guidance teams and organizations might adopt to follow in these organizations' footsteps."
+  },
+  {
+    "title": "Systems Engineering at NASA",
+    "section": "Writing",
+    "path": "/writing/systems-engineering-nasa",
+    "description": "This study attempts to summarize how NASA's System Engineers operate in order to better understand how to manage complex technical projects."
+  },
+  {
+    "title": "Systems Engineering for Visual Effects",
+    "section": "Writing",
+    "path": "/writing/systems-engineering-vfx",
+    "description": "This paper describes Systems Engineering, as practiced by NASA, and explores the application of its principles and techniques to the operation of visual effects (VFX) studios. It discusses challenges in VFX projects, like complexity management and technical/artistic integration, and proposes that VFX studios could improve their engineering and operations by adopting the perspective and methods of Systems Engineering."
+  },
+  {
+    "title": "Black Ivy Style Guide",
+    "section": "Notes",
+    "path": "/notes/black-ivy-style",
+    "description": ""
+  },
+  {
+    "title": "My Favorite Free Fonts",
+    "section": "Notes",
+    "path": "/notes/free_fonts",
+    "description": ""
+  },
+  {
+    "title": "Recommended Papers",
+    "section": "Notes",
+    "path": "/notes/papers",
+    "description": ""
+  },
+  {
+    "title": "Built-In macOS Window Management Tools",
+    "section": "Notes",
+    "path": "/notes/macos_window_management",
+    "description": ""
+  },
+  {
+    "title": "Notes on Managing",
+    "section": "Notes",
+    "path": "/notes/managing",
+    "description": ""
+  },
+  {
+    "title": "Thoughts on Growing a Company",
+    "section": "Notes",
+    "path": "/notes/growth_thoughts",
+    "description": ""
+  },
+  {
+    "title": "Recommended Books",
+    "section": "Notes",
+    "path": "/notes/books",
+    "description": ""
+  },
+  {
+    "title": "Worth The Money",
+    "section": "Notes",
+    "path": "/notes/worth_the_money",
+    "description": ""
+  },
+  {
+    "title": "Software I Love",
+    "section": "Notes",
+    "path": "/notes/software_love",
+    "description": ""
+  },
+  {
+    "title": "Harrison Ford Movies",
+    "section": "Notes",
+    "path": "/notes/harrison_ford_movies",
+    "description": ""
+  },
+  {
+    "title": "A Partial List of Movies Released in 2007",
+    "section": "Notes",
+    "path": "/notes/2007_movies",
+    "description": ""
+  },
+  {
+    "title": "The Revelation of the Complex",
+    "section": "Notes",
+    "path": "/notes/revelation_complex",
+    "description": ""
+  },
+  {
+    "title": "Perfection",
+    "section": "Notes",
+    "path": "/notes/perfection",
+    "description": ""
+  },
+  {
+    "title": "Writing In Plain-Text",
+    "section": "Notes",
+    "path": "/notes/writing_in_plain_text",
+    "description": ""
+  },
+  {
+    "title": "Quick Help: Emacs as a Text Productivity Platform",
+    "section": "Emacs",
+    "path": "/emacs/quick-help",
+    "description": ""
+  },
+  {
+    "title": "Confirm Killing Modified Buffers",
+    "section": "Emacs",
+    "path": "/emacs/buffer-confirm-kill",
+    "description": ""
+  },
+  {
+    "title": "Custom Scratch Buffers",
+    "section": "Emacs",
+    "path": "/emacs/custom-scratch-buffers",
+    "description": ""
+  },
+  {
+    "title": "Keymap Prompts",
+    "section": "Emacs",
+    "path": "/emacs/keymap-prompt",
+    "description": ""
+  },
+  {
+    "title": "Mark Line & Marking Transient Command",
+    "section": "Emacs",
+    "path": "/emacs/mark-line-transient-command",
+    "description": ""
+  },
+  {
+    "title": "Kill Buffer DWIM",
+    "section": "Emacs",
+    "path": "/emacs/kill-buffer-dwim",
+    "description": ""
+  },
+  {
+    "title": "Splitting Windows With the Mouse",
+    "section": "Emacs",
+    "path": "/emacs/mouse-window-splits",
+    "description": ""
+  },
+  {
+    "title": "Emacs Keybindings That Won't Get Overridden by Minor Modes",
+    "section": "Emacs",
+    "path": "/emacs/bosskey-mode",
+    "description": ""
+  },
+  {
+    "title": "How Package.el Works with Use Package",
+    "section": "Emacs",
+    "path": "/emacs/notes-on-package-el",
+    "description": ""
+  },
+  {
+    "title": "Extending Emacs Bookmarks to Work With EWW",
+    "section": "Emacs",
+    "path": "/emacs/extending-emacs-bookmarks",
+    "description": ""
+  },
+  {
+    "title": "Link Archive",
+    "section": "Links",
+    "path": "/links",
+    "description": ""
+  }
+]
