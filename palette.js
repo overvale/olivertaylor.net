@@ -94,6 +94,16 @@
     status.textContent = message || "";
   }
 
+  function scrollOptionIntoView(option) {
+    var optionRect = option.getBoundingClientRect();
+    var listRect = list.getBoundingClientRect();
+    if (optionRect.top < listRect.top) {
+      list.scrollTop -= listRect.top - optionRect.top;
+    } else if (optionRect.bottom > listRect.bottom) {
+      list.scrollTop += optionRect.bottom - listRect.bottom;
+    }
+  }
+
   function setActive(index, shouldScroll) {
     var options = list.querySelectorAll('[role="option"]');
     if (!options.length) {
@@ -108,7 +118,7 @@
       options[i].setAttribute("aria-selected", i === index ? "true" : "false");
     }
     input.setAttribute("aria-activedescendant", options[index].id);
-    if (shouldScroll) options[index].scrollIntoView({ block: "nearest" });
+    if (shouldScroll) scrollOptionIntoView(options[index]);
   }
 
   function optionId(page, index) {
@@ -303,17 +313,21 @@
 
   function closePalette() {
     if (!isOpen()) return;
+    var focus = lastFocus;
+    lastFocus = null;
+    setPageInert(false);
+    var canRestore = focus &&
+      focus !== document.body &&
+      focus !== document.documentElement &&
+      typeof focus.focus === "function" &&
+      document.contains(focus);
+    if (canRestore) focus.focus();
+    else if (document.activeElement === input) input.blur();
     root.hidden = true;
     document.body.classList.remove("palette-open");
     setButtonsExpanded(false);
-    setPageInert(false);
     input.setAttribute("aria-expanded", "false");
     input.removeAttribute("aria-activedescendant");
-    var focus = lastFocus;
-    lastFocus = null;
-    if (focus && typeof focus.focus === "function" && document.contains(focus)) {
-      focus.focus();
-    }
   }
 
   function onKeydown(event) {
