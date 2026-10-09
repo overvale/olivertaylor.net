@@ -90,8 +90,10 @@ render_site_header() {
   echo '<header>'
   echo '<div class="header-inner">'
   echo '<a class="site-title" href="/">Oliver Taylor</a>'
-  render_palette_button
+  # The button follows the nav so the desktop sidebar shows it underneath.
+  # Narrow screens place it beside the title with CSS grid areas.
   render_header_nav "$current_path"
+  render_palette_button
   echo '</div>'
   echo '<script src="/palette.js" defer></script>'
   echo '</header>'
@@ -112,7 +114,12 @@ labels = {
     "links": "Links",
     "ai": "AI",
 }
-pages = []
+pages = [{
+    "title": "Home",
+    "section": "Home",
+    "path": "/",
+    "description": "",
+}]
 for line in Path(sys.argv[1]).read_text(encoding="utf-8").splitlines():
     if not line.strip() or line.lstrip().startswith("#"):
         continue

@@ -414,16 +414,23 @@ else
   fail "palette.js is missing search, section labels, or combobox behavior"
 fi
 
-if grep -q 'code === "KeyK"' ./palette.js && grep -q 'event.key === "/"' ./palette.js; then
-  pass "palette.js opens from Ctrl-K or Cmd-K and from slash"
+if grep -q 'event.code === "KeyK"' ./palette.js &&
+   grep -q 'toLowerCase() === "k"' ./palette.js &&
+   grep -q 'addEventListener("keydown", onKeydown, true)' ./palette.js &&
+   grep -q 'event.metaKey' ./palette.js &&
+   grep -q 'event.key === "/"' ./palette.js &&
+   grep -q 'google.com/search?q=' ./palette.js &&
+   grep -q 'site:olivertaylor.net' ./palette.js; then
+  pass "palette.js opens from Ctrl-K or Cmd-K and from slash, and can search Google"
 else
-  fail "palette.js is missing the keyboard shortcuts"
+  fail "palette.js is missing the keyboard shortcuts or Google site search"
 fi
 
 if [ -s ./style.css ] &&
    grep -q '\.palette-button' ./style.css &&
    grep -q '\.palette-dialog' ./style.css &&
    grep -q '\.palette-section' ./style.css &&
+   grep -q '\.palette-web-option' ./style.css &&
    grep -q '\.palette\[hidden\]' ./style.css; then
   pass "style.css styles the command palette, including its section labels"
 else
@@ -452,7 +459,15 @@ for page in "${palette_pages[@]}"; do
   if [ -f "$page" ] &&
      grep -q 'class="palette-button" href="/notes/"' "$page" &&
      grep -q 'src="/palette.js"' "$page" &&
-     grep -q 'aria-label="Search pages"' "$page"; then
+     grep -q 'aria-label="Search pages"' "$page" &&
+     awk '
+       BEGIN { in_header = 0; saw_nav = 0; button_after_nav = 0 }
+       /<header>/ { in_header = 1 }
+       in_header && /<\/nav>/ { saw_nav = 1 }
+       in_header && /class="palette-button"/ { if (saw_nav) button_after_nav = 1 }
+       in_header && /<\/header>/ { exit }
+       END { exit button_after_nav ? 0 : 1 }
+     ' "$page"; then
     pass "${page#./} includes the search button and palette script"
   else
     fail "${page#./} is missing the search button or palette script"
@@ -494,7 +509,12 @@ except json.JSONDecodeError as exc:
     pages = None
     errors.append(f"site-index.json is not valid JSON ({exc})")
 
-expected = []
+expected = [{
+    "title": "Home",
+    "section": "Home",
+    "path": "/",
+    "description": "",
+}]
 for line in Path("markdown/site-nav.tsv").read_text(encoding="utf-8").splitlines():
     if not line.strip() or line.lstrip().startswith("#"):
         continue
@@ -529,8 +549,8 @@ if isinstance(pages, list):
             if path.endswith(".html") or not path.startswith("/"):
                 errors.append(f"{path} is not an extensionless root path")
                 continue
-            rel = path[1:]
-            if not Path(rel + ".html").is_file():
+            html_path = Path("index.html") if path == "/" else Path(path[1:] + ".html")
+            if not html_path.is_file():
                 errors.append(f"no HTML file for {path}")
             if not page["section"] or not page["title"]:
                 errors.append(f"{path} is missing a title or section")

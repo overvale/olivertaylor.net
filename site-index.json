@@ -1,5 +1,11 @@
 [
   {
+    "title": "Home",
+    "section": "Home",
+    "path": "/",
+    "description": ""
+  },
+  {
     "title": "DARPA, Skunk Works, & Bell Labs: Structured to Innovate",
     "section": "Writing",
     "path": "/writing/structured-to-innovate",

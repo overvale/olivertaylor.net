@@ -9,6 +9,9 @@
   var input = null;
   var list = null;
   var status = null;
+  var webWrap = null;
+  var webLink = null;
+  var webQuery = null;
   var closeButton = null;
   var activeIndex = -1;
   var lastFocus = null;
@@ -94,7 +97,19 @@
     status.textContent = message || "";
   }
 
+  function googleSearchHref(term) {
+    return "https://www.google.com/search?q=" +
+      encodeURIComponent("site:olivertaylor.net " + term).replace(/%20/g, "+");
+  }
+
+  function paletteOptions() {
+    var options = Array.prototype.slice.call(list.querySelectorAll('[role="option"]'));
+    if (webWrap && !webWrap.hidden) options.push(webLink);
+    return options;
+  }
+
   function scrollOptionIntoView(option) {
+    if (!list.contains(option)) return;
     var optionRect = option.getBoundingClientRect();
     var listRect = list.getBoundingClientRect();
     if (optionRect.top < listRect.top) {
@@ -105,7 +120,7 @@
   }
 
   function setActive(index, shouldScroll) {
-    var options = list.querySelectorAll('[role="option"]');
+    var options = paletteOptions();
     if (!options.length) {
       activeIndex = -1;
       input.removeAttribute("aria-activedescendant");
@@ -158,7 +173,30 @@
     return item;
   }
 
+  function showWebSearch(term, total) {
+    webWrap.hidden = false;
+    webLink.href = googleSearchHref(term);
+    webQuery.textContent = term;
+    webLink.setAttribute("role", "option");
+    webLink.setAttribute("aria-selected", "false");
+    webLink.setAttribute("aria-posinset", String(total));
+    webLink.setAttribute("aria-setsize", String(total));
+    webLink.setAttribute("aria-label", "Search Google for " + term);
+    list.setAttribute("aria-owns", webLink.id);
+  }
+
+  function hideWebSearch() {
+    webWrap.hidden = true;
+    webLink.removeAttribute("href");
+    webLink.removeAttribute("aria-posinset");
+    webLink.removeAttribute("aria-setsize");
+    webLink.removeAttribute("aria-label");
+    webLink.setAttribute("aria-selected", "false");
+    list.removeAttribute("aria-owns");
+  }
+
   function render(query) {
+    var term = String(query || "").trim();
     var tokens = tokensOf(query);
     var found = [];
     var source = pages || [];
@@ -168,29 +206,45 @@
       if (matches(page, tokens)) found.push(page);
     }
 
+    var showWeb = term.length > 0;
+    var total = found.length + (showWeb ? 1 : 0);
     list.replaceChildren();
-    if (!found.length) {
+    if (found.length) {
+      var fragment = document.createDocumentFragment();
+      for (var j = 0; j < found.length; j++) {
+        fragment.appendChild(renderOption(found[j], j, total));
+      }
+      list.appendChild(fragment);
+    }
+    if (showWeb) showWebSearch(term, total);
+    else hideWebSearch();
+
+    if (!pages) showStatus("Loading pages…");
+    else if (!found.length) showStatus("No matching pages");
+    else showStatus("");
+
+    if (!total) {
       input.setAttribute("aria-expanded", "false");
       input.removeAttribute("aria-activedescendant");
       activeIndex = -1;
-      showStatus(pages ? "No matching pages" : "Loading pages…");
       return;
     }
 
-    showStatus("");
-    var fragment = document.createDocumentFragment();
-    for (var j = 0; j < found.length; j++) {
-      fragment.appendChild(renderOption(found[j], j, found.length));
-    }
-    list.appendChild(fragment);
     input.setAttribute("aria-expanded", "true");
     setActive(0, false);
     list.scrollTop = 0;
   }
 
   function go() {
-    var selected = list.querySelector('[aria-selected="true"]');
-    if (!selected) return;
+    var options = paletteOptions();
+    var selected = null;
+    for (var i = 0; i < options.length; i++) {
+      if (options[i].getAttribute("aria-selected") === "true") {
+        selected = options[i];
+        break;
+      }
+    }
+    if (!selected || !selected.getAttribute("href")) return;
     window.location.assign(selected.href);
   }
 
@@ -242,7 +296,6 @@
     input.setAttribute("spellcheck", "false");
     input.setAttribute("inputmode", "search");
     input.addEventListener("input", function () {
-      if (!pages) return;
       render(input.value);
     });
 
@@ -264,12 +317,40 @@
     status.setAttribute("role", "status");
     status.hidden = true;
 
+    webWrap = document.createElement("div");
+    webWrap.className = "palette-web";
+    webWrap.hidden = true;
+
+    webLink = document.createElement("a");
+    webLink.id = "palette-web-option";
+    webLink.className = "palette-web-option";
+    webLink.setAttribute("role", "option");
+    webLink.tabIndex = -1;
+    webLink.setAttribute("aria-selected", "false");
+    webLink.addEventListener("mouseenter", function () {
+      var options = paletteOptions();
+      var index = options.indexOf(webLink);
+      if (index >= 0) setActive(index, false);
+    });
+
+    var webLabel = document.createElement("span");
+    webLabel.className = "palette-web-label";
+    webLabel.textContent = "Search Google";
+
+    webQuery = document.createElement("span");
+    webQuery.className = "palette-web-query";
+
+    webLink.appendChild(webLabel);
+    webLink.appendChild(webQuery);
+    webWrap.appendChild(webLink);
+
     search.appendChild(label);
     search.appendChild(input);
     search.appendChild(closeButton);
     dialog.appendChild(search);
     dialog.appendChild(list);
     dialog.appendChild(status);
+    dialog.appendChild(webWrap);
     root.appendChild(backdrop);
     root.appendChild(dialog);
     document.body.appendChild(root);
@@ -298,6 +379,7 @@
       render("");
     } else {
       list.replaceChildren();
+      hideWebSearch();
       input.setAttribute("aria-expanded", "false");
       showStatus("Loading pages\u2026");
       loadPages().then(function () {
@@ -330,19 +412,28 @@
     input.removeAttribute("aria-activedescendant");
   }
 
+  function isCommandK(event) {
+    if (event.altKey || event.shiftKey || event.repeat) return false;
+    if (!event.metaKey && !event.ctrlKey) return false;
+    if (event.code === "KeyK") return true;
+    var key = event.key;
+    if (typeof key === "string" && key.toLowerCase() === "k") return true;
+    // Safari can leave code empty and key as "Unidentified" for meta chords.
+    return (event.keyCode || event.which) === 75;
+  }
+
   function onKeydown(event) {
-    if (event.defaultPrevented) return;
-    var shortcut = event.code === "KeyK" &&
-      (event.metaKey || event.ctrlKey) &&
-      !event.altKey &&
-      !event.shiftKey &&
-      !event.repeat;
-    if (shortcut) {
+    // Handle the chord before defaultPrevented. Chrome and Safari claim
+    // Cmd-K and Ctrl-K for the address bar unless the page cancels it
+    // during the capture phase.
+    if (isCommandK(event)) {
       event.preventDefault();
+      event.stopPropagation();
       if (isOpen()) closePalette();
       else openPalette();
       return;
     }
+    if (event.defaultPrevented) return;
 
     if (!isOpen()) {
       if (event.key === "/" &&
@@ -397,6 +488,6 @@
     event.preventDefault();
     openPalette();
   });
-  document.addEventListener("keydown", onKeydown);
+  window.addEventListener("keydown", onKeydown, true);
   loadPages().catch(function () {});
 })();
